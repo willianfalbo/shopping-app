@@ -1,14 +1,11 @@
 <main>
     <form class="product-form" action="/admin/{{#if editing}}edit-product{{else}}add-product{{/if}}" method="POST">
-        {{#if editing}}
-            <input type="hidden" name="id" id="id" value="{{product.id}}">
-        {{/if}}
         <div class="form-control">
             <label for="title">Title</label>
             <input type="text" name="title" id="title" value="{{#if editing}}{{product.title}}{{/if}}">
         </div>
         <div class="form-control">
-            <label for="imageUrl">Image Url</label>
+            <label for="imageUrl">Image URL</label>
             <input type="text" name="imageUrl" id="imageUrl" value="{{#if editing}}{{product.imageUrl}}{{/if}}">
         </div>
         <div class="form-control">
@@ -19,6 +16,10 @@
             <label for="description">Description</label>
             <textarea name="description" id="description" rows="5">{{#if editing}}{{product.description}}{{/if}}</textarea>
         </div>
+        {{#if editing}}
+            <input type="hidden" name="id" id="id" value="{{product.id}}">
+        {{/if}}
+	
         <button class="btn" type="submit">{{#if editing }} Edit Product {{ else }} Add Product {{/if}}</button>
     </form>
 </main>
