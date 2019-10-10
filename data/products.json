@@ -1,1 +1,23 @@
-[{"id":"0.36801703674691","title":"Connoisseur Kids Book","imageUrl":"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSvkh4O6aY7unBv297ruK5wOC0myk4fU2hSweM9CpMKujXm0dXq","description":"A simple description for Connoisseur Kids Book","price":"15.99"},{"id":"0.11996452769703647","title":"Best Self Book","imageUrl":"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRKhJqLrulQcAXgybrLnwFKnqFTP4Ovt8XpczATi0cPxSBBeS50Pg","description":"A simple description for Best Self Book","price":"19.92"},{"id":"0.392820171881324","title":"Everything Is Fucked Book","imageUrl":"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSzAqG92hXwxCYQ5mHjBqMM62R62lVM4IkIPd06MI83OMsM44JBNw","description":"A simple description for Everything Is Fucked Book","price":"17.47"}]
+[
+    {
+        "id": "0.36801703674691",
+        "title": "Connoisseur Kids Book",
+        "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSvkh4O6aY7unBv297ruK5wOC0myk4fU2hSweM9CpMKujXm0dXq",
+        "description": "A simple description for Connoisseur Kids Book",
+        "price": "15.99"
+    },
+    {
+        "id": "0.11996452769703647",
+        "title": "Best Self Book",
+        "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRKhJqLrulQcAXgybrLnwFKnqFTP4Ovt8XpczATi0cPxSBBeS50Pg",
+        "description": "A simple description for Best Self Book",
+        "price": "19.92"
+    },
+    {
+        "id": "0.392820171881324",
+        "title": "Everything Is Fucked Book",
+        "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSzAqG92hXwxCYQ5mHjBqMM62R62lVM4IkIPd06MI83OMsM44JBNw",
+        "description": "A simple description for Everything Is Fucked Book",
+        "price": "17.47"
+    }
+]
