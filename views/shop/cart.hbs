@@ -4,9 +4,9 @@
             {{#each products}}
                 <li class="cart__item">
                     <h1>{{this.title}}</h1>
-                    <h2>Quantity: {{this.cartItem.quantity}}</h2>
+                    <h2>Quantity: {{this.quantity}}</h2>
                     <form action="/cart-delete-item" method="POST">
-                        <input type="hidden" value="{{this.id}}" name="productId">
+                        <input type="hidden" value="{{this._id}}" name="productId">
                         <button class="btn danger" type="submit">Delete</button>
                     </form>
             </li>

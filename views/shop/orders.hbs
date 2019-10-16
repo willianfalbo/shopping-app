@@ -1,17 +1,17 @@
 <main>
 	{{#if hasOrders }}
-	        <ul>
-	            {{#each orders}}
-	                <li>
-	                    <h1># {{ this.id }}</h1>
-	                    <ul>
-			    	{{#each this.products }}
-	                            <li>{{ this.title }} ({{ this.orderItem.quantity }})</li>
-	                        {{/each}}
-	                    </ul>
-	                </li>
-	            {{/each}}
-	        </ul>
+	<ul class="orders">
+		{{#each orders}}
+			<li class="orders__item">
+				<h1>Order - # {{ this._id }}</h1>
+				<ul class="orders__products">
+					{{#each this.items }}
+					<li class="orders__products-item">{{ this.title }} ({{ this.quantity }})</li>
+					{{/each}}
+				</ul>
+			</li>
+		{{/each}}
+	</ul>
 	{{ else }}
 		<h1>Nothing there!</h1>
 	{{/if}}
