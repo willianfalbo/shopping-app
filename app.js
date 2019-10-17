@@ -1,10 +1,10 @@
 const path = require('path');
 const express = require('express');
 const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
 const expressHbs = require('express-handlebars');
 
 const errorController = require('./controllers/errorController');
-const mongoConnect = require('./util/database').mongoConnect;
 const User = require('./models/user');
 
 const app = express();
@@ -30,7 +30,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use((req, res, next) => {
   User.findById('5baa2528563f16379fc8a610')
     .then(user => {
-      req.user = new User(user.name, user.email, user.cart, user._id);
+      req.user = user;
       next();
     })
     .catch(err => console.log(err));
@@ -41,7 +41,29 @@ app.use(shopRoutes);
 
 app.use(errorController.get404);
 
-mongoConnect(() => {
-  app.listen(3000);
-  console.log('listening on port 3000');
-});
+mongoose
+  .connect(
+    'mongodb+srv://shoppingapp:wSIFMCulwjjeecF4@freecluster-uyaue.mongodb.net/shopping-db?retryWrites=true&w=majority',
+    { useNewUrlParser: true, useUnifiedTopology: true }
+  )
+  .then(result => {
+    User.findById('5baa2528563f16379fc8a610')
+    .then(user => {
+      if (!user) {
+        const user = new User({
+          _id: '5baa2528563f16379fc8a610',
+          name: 'Willian',
+          email: 'willian@gmail.com',
+          cart: {
+            items: []
+          }
+        });
+        user.save();
+      }
+    });
+    app.listen(3000);
+    console.log('listening on port 3000');
+  })
+  .catch(err => {
+    console.log(err);
+  });

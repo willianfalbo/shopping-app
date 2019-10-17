@@ -5,8 +5,8 @@
 			<li class="orders__item">
 				<h1>Order - # {{ this._id }}</h1>
 				<ul class="orders__products">
-					{{#each this.items }}
-					<li class="orders__products-item">{{ this.title }} ({{ this.quantity }})</li>
+					{{#each this.products }}
+						<li class="orders__products-item">{{ this.product.title }} ({{ this.quantity }})</li>
 					{{/each}}
 				</ul>
 			</li>

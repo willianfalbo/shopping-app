@@ -4,7 +4,9 @@
         {{#each prods}}
         <article class="card product-item">
             <header class="card__header">
-                <h1 class="product__title">{{ this.title }}</h1>
+                <h1 class="product__title">
+			{{ this.title }}
+		</h1>
             </header>
             <div class="card__image">
                 <img src="{{ this.imageUrl }}" alt="{{ this.title }}">

@@ -3,10 +3,10 @@
         <ul class="cart__item-list">
             {{#each products}}
                 <li class="cart__item">
-                    <h1>{{this.title}}</h1>
+                    <h1>{{this.product.title}}</h1>
                     <h2>Quantity: {{this.quantity}}</h2>
                     <form action="/cart-delete-item" method="POST">
-                        <input type="hidden" value="{{this._id}}" name="productId">
+                        <input type="hidden" value="{{this.product._id}}" name="productId">
                         <button class="btn danger" type="submit">Delete</button>
                     </form>
             </li>
