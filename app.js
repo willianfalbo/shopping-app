@@ -1,68 +1,115 @@
+require('dotenv').config();
 const path = require('path');
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
-const expressHbs = require('express-handlebars');
+const session = require('express-session');
+const MongoDBStore = require('connect-mongodb-session')(session);
+const csrf = require('csurf');
+const flash = require('connect-flash');
+const multer = require('multer');
 
-const errorController = require('./controllers/errorController');
+const config = require('./util/config');
+const errorController = require('./controllers/error');
 const User = require('./models/user');
 
 const app = express();
+const store = new MongoDBStore({
+  uri: config.MONGODB_URI,
+  collection: 'sessions'
+});
+const csrfProtection = csrf();
 
-// configuration for handlebars
-app.engine(
-  'hbs',
-  expressHbs({
-    layoutsDir: 'views/layouts/',
-    defaultLayout: 'main-layout',
-    extname: 'hbs'
-  })
-);
-app.set('view engine', 'hbs');
+const fileStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'images');
+  },
+  filename: (req, file, cb) => {
+    cb(null, new Date().toISOString() + '-' + file.originalname);
+  }
+});
+
+const fileFilter = (req, file, cb) => {
+  if (
+    file.mimetype === 'image/png' ||
+    file.mimetype === 'image/jpg' ||
+    file.mimetype === 'image/jpeg'
+  ) {
+    cb(null, true);
+  } else {
+    cb(null, false);
+  }
+};
+
+app.set('view engine', 'ejs');
 app.set('views', 'views');
 
-const adminRoutes = require('./routes/adminRoute');
-const shopRoutes = require('./routes/shopRoute');
+const adminRoutes = require('./routes/admin');
+const shopRoutes = require('./routes/shop');
+const authRoutes = require('./routes/auth');
 
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(
+  multer({ storage: fileStorage, fileFilter: fileFilter }).single('image')
+);
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/images', express.static(path.join(__dirname, 'images')));
+app.use(
+  session({
+    secret: config.SECRET_KEY,
+    resave: false,
+    saveUninitialized: false,
+    store: store
+  })
+);
+app.use(csrfProtection);
+app.use(flash());
 
 app.use((req, res, next) => {
-  User.findById('5baa2528563f16379fc8a610')
+  res.locals.isAuthenticated = req.session.isLoggedIn;
+  res.locals.csrfToken = req.csrfToken();
+  next();
+});
+
+app.use((req, res, next) => {
+  if (!req.session.user) {
+    return next();
+  }
+  User.findById(req.session.user._id)
     .then(user => {
+      if (!user) {
+        return next();
+      }
       req.user = user;
       next();
     })
-    .catch(err => console.log(err));
+    .catch(err => {
+      next(new Error(err));
+    });
 });
 
 app.use('/admin', adminRoutes);
 app.use(shopRoutes);
+app.use(authRoutes);
+
+app.get('/500', errorController.get500);
 
 app.use(errorController.get404);
 
+app.use((error, req, res, next) => {
+  res.status(500).render('500', {
+    pageTitle: 'Error!',
+    path: '/500',
+    isAuthenticated: req.session.isLoggedIn
+  });
+});
+
+const port = process.env.PORT || 3000;
 mongoose
-  .connect(
-    'mongodb+srv://shoppingapp:wSIFMCulwjjeecF4@freecluster-uyaue.mongodb.net/shopping-db?retryWrites=true&w=majority',
-    { useNewUrlParser: true, useUnifiedTopology: true }
-  )
+  .connect(config.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(result => {
-    User.findById('5baa2528563f16379fc8a610')
-    .then(user => {
-      if (!user) {
-        const user = new User({
-          _id: '5baa2528563f16379fc8a610',
-          name: 'Willian',
-          email: 'willian@gmail.com',
-          cart: {
-            items: []
-          }
-        });
-        user.save();
-      }
-    });
-    app.listen(3000);
-    console.log('listening on port 3000');
+    app.listen(port);
+    console.log(`listening on port ${port}`);
   })
   .catch(err => {
     console.log(err);
