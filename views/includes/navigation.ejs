@@ -4,10 +4,7 @@
     <nav class="main-header__nav">
         <ul class="main-header__item-list">
             <li class="main-header__item">
-                <a class="<%= path === '/' ? 'active' : '' %>" href="/">Shop</a>
-            </li>
-            <li class="main-header__item">
-                <a class="<%= path === '/products' ? 'active' : '' %>" href="/products">Products</a>
+                <a class="<%= (path === '/' || path === '/products') ? 'active' : '' %>" href="/">Shop</a>
             </li>
             <% if (isAuthenticated) { %>
                 <li class="main-header__item">
@@ -16,6 +13,7 @@
                 <li class="main-header__item">
                     <a class="<%= path === '/orders' ? 'active' : '' %>" href="/orders">Orders</a>
                 </li>
+                <% if (isAdmin) { %>
                 <li class="main-header__item">
                     <a class="<%= path === '/admin/add-product' ? 'active' : '' %>" href="/admin/add-product">Add Product
                     </a>
@@ -24,6 +22,7 @@
                     <a class="<%= path === '/admin/products' ? 'active' : '' %>" href="/admin/products">Admin Products
                     </a>
                 </li>
+                <% } %>
             <% } %>
         </ul>
         <ul class="main-header__item-list">
@@ -36,9 +35,10 @@
                 </li>
             <% } else { %>
                 <li class="main-header__item">
+                    <span style="color: darkgray; font-size: 85%;"><%= userEmail %></span><br>
                     <form action="/logout" method="post">
                         <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                        <button type="submit">Logout</button>
+                        <button type="submit" style="font-size: 90%;">Logout</button>
                     </form>
                 </li>
             <% } %>
@@ -49,10 +49,7 @@
 <nav class="mobile-nav">
     <ul class="mobile-nav__item-list">
         <li class="mobile-nav__item">
-            <a class="<%= path === '/' ? 'active' : '' %>" href="/">Shop</a>
-        </li>
-        <li class="mobile-nav__item">
-            <a class="<%= path === '/products' ? 'active' : '' %>" href="/products">Products</a>
+            <a class="<%= (path === '/' || path === '/products') ? 'active' : '' %>" href="/">Shop</a>
         </li>
         <% if (isAuthenticated) { %>
             <li class="mobile-nav__item">
@@ -61,6 +58,7 @@
             <li class="mobile-nav__item">
                 <a class="<%= path === '/orders' ? 'active' : '' %>" href="/orders">Orders</a>
             </li>
+            <% if (isAdmin) { %>
             <li class="mobile-nav__item">
                 <a class="<%= path === '/admin/add-product' ? 'active' : '' %>" href="/admin/add-product">Add Product
                 </a>
@@ -69,6 +67,7 @@
                 <a class="<%= path === '/admin/products' ? 'active' : '' %>" href="/admin/products">Admin Products
                 </a>
             </li>
+            <% } %>
         <% } %>
         <% if (!isAuthenticated) { %>
             <li class="mobile-nav__item">
@@ -83,6 +82,9 @@
                     <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                     <button type="submit">Logout</button>
                 </form>
+            </li>
+            <li class="mobile-nav__item">
+                <span style="color: darkgray; font-size: 85%;"><%= userEmail %></span>
             </li>
         <% } %>
     </ul>

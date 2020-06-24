@@ -5,14 +5,15 @@ const { body } = require('express-validator/check');
 
 const adminController = require('../controllers/admin');
 const isAuth = require('../middleware/is-auth');
+const isAdmin = require('../middleware/is-admin');
 
 const router = express.Router();
 
 // /admin/add-product => GET
-router.get('/add-product', isAuth, adminController.getAddProduct);
+router.get('/add-product', isAuth, isAdmin, adminController.getAddProduct);
 
 // /admin/products => GET
-router.get('/products', isAuth, adminController.getProducts);
+router.get('/products', isAuth, isAdmin, adminController.getProducts);
 
 // /admin/add-product => POST
 router.post(
@@ -28,10 +29,11 @@ router.post(
       .trim()
   ],
   isAuth,
+  isAdmin,
   adminController.postAddProduct
 );
 
-router.get('/edit-product/:productId', isAuth, adminController.getEditProduct);
+router.get('/edit-product/:productId', isAuth, isAdmin, adminController.getEditProduct);
 
 router.post(
   '/edit-product',
@@ -46,9 +48,10 @@ router.post(
       .trim()
   ],
   isAuth,
+  isAdmin,
   adminController.postEditProduct
 );
 
-router.delete('/product/:productId', isAuth, adminController.deleteProduct);
+router.delete('/product/:productId', isAuth, isAdmin, adminController.deleteProduct);
 
 module.exports = router;

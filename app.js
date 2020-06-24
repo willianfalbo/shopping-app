@@ -1,5 +1,7 @@
 require('dotenv').config();
+
 const path = require('path');
+const fs = require('fs');
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
@@ -8,6 +10,9 @@ const MongoDBStore = require('connect-mongodb-session')(session);
 const csrf = require('csurf');
 const flash = require('connect-flash');
 const multer = require('multer');
+const helmet = require('helmet');
+const compression = require('compression');
+const morgan = require('morgan');
 
 const config = require('./util/config');
 const errorController = require('./controllers/error');
@@ -48,6 +53,12 @@ const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
 const authRoutes = require('./routes/auth');
 
+app.use(helmet());
+app.use(compression());
+
+var accessLogStream = fs.createWriteStream(path.join(__dirname, 'access.log'), { flags: 'a' });
+app.use(morgan('combined', { stream: accessLogStream }));
+
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(
   multer({ storage: fileStorage, fileFilter: fileFilter }).single('image')
@@ -56,7 +67,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/images', express.static(path.join(__dirname, 'images')));
 app.use(
   session({
-    secret: config.SECRET_KEY,
+    secret: config.APP_SECRET_KEY,
     resave: false,
     saveUninitialized: false,
     store: store
@@ -81,6 +92,8 @@ app.use((req, res, next) => {
         return next();
       }
       req.user = user;
+      res.locals.isAdmin = user.isAdmin;
+      res.locals.userEmail = user.email;
       next();
     })
     .catch(err => {
@@ -93,6 +106,7 @@ app.use(shopRoutes);
 app.use(authRoutes);
 
 app.get('/500', errorController.get500);
+app.get('/403', errorController.get403);
 
 app.use(errorController.get404);
 
@@ -109,7 +123,7 @@ mongoose
   .connect(config.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(result => {
     app.listen(port);
-    console.log(`listening on port ${port}`);
+    console.log(`Listening on port ${port}`);
   })
   .catch(err => {
     console.log(err);
