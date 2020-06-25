@@ -1,6 +1,6 @@
 ## Shopping App
 
-Simple application for shopping. It was created for demonstration purpose only.
+A simplified version of an online shopping application. It was created for demonstration purpose only.
 
 ### Features
 
@@ -58,4 +58,4 @@ Simple application for shopping. It was created for demonstration purpose only.
 
 ### Credits
 
-This App was created based on [Maximilian Schwarzmüller](https://academind.com/team/#maximilian)'s course. [NodeJS - The Complete Guide](https://academind.com/learn/our-courses/).
+This app was created based on [Maximilian Schwarzmüller](https://academind.com/team/#maximilian)'s course. [NodeJS - The Complete Guide](https://academind.com/learn/our-courses/).
