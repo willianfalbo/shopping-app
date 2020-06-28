@@ -8,7 +8,7 @@ A simplified version of an online shopping application. It was created for demon
 - Shopping: Paginated product listing, product details and so on.
 - Cart: Add different products to cart and visualise checkout page.
 - Orders & Payments: Create orders, enter credit card details, get pdf receipt and view orders.
-- Product Management: Upload photos, create products, update and delete.
+- Admin Area: Manage products online, upload photos, create products, update and delete.
 
 ### Quick Preview
 
